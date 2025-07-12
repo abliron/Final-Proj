@@ -1,0 +1,63 @@
+{
+  "name": "ecommerce-fullstack-app",
+  "description": "Full-stack e-commerce application with React frontend and Node.js backend",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "keywords": [
+    "ecommerce",
+    "react",
+    "nodejs",
+    "mongodb",
+    "fullstack",
+    "shopping-cart",
+    "authentication"
+  ],
+  "author": "Liron",
+  "license": "MIT",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "lint": "eslint .",
+    "preview": "vite preview",
+    "start": "concurrently \"npm run server\" \"npm run client\"",
+    "start:all": "concurrently \"npm run server\" \"npm run client\"",
+    "server": "cd server && npm start",
+    "client": "cd client && npm start",
+    "install:all": "npm install && cd server && npm install && cd ../client && npm install",
+    "build:all": "npm run build && cd server && npm run build",
+    "test": "echo \"No tests specified\" && exit 0"
+  },
+  "dependencies": {
+    "all": "^0.0.0",
+    "axios": "^1.10.0",
+    "mongodb": "^6.17.0",
+    "react": "^19.1.0",
+    "react-dom": "^19.1.0",
+    "zustand": "^5.0.6"
+  },
+  "devDependencies": {
+    "@eslint/js": "^9.30.1",
+    "@types/react": "^19.1.8",
+    "@types/react-dom": "^19.1.6",
+    "@vitejs/plugin-react": "^4.6.0",
+    "concurrently": "^8.2.2",
+    "eslint": "^9.30.1",
+    "eslint-plugin-react-hooks": "^5.2.0",
+    "eslint-plugin-react-refresh": "^0.4.20",
+    "globals": "^16.3.0",
+    "vite": "^7.0.4"
+  },
+  "engines": {
+    "node": ">=16.0.0",
+    "npm": ">=8.0.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/yourusername/ecommerce-fullstack-app.git"
+  },
+  "bugs": {
+    "url": "https://github.com/yourusername/ecommerce-fullstack-app/issues"
+  },
+  "homepage": "https://github.com/yourusername/ecommerce-fullstack-app#readme"
+}
