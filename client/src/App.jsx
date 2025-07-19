@@ -1,36 +1,43 @@
-import React, { useState } from 'react';
-import { useAuthStore } from './store/authStore';
-import { useCartStore } from './store/cartStore';
-import Header from './components/Header';
-import Sidebar from './components/Sidebar';
-import Store from './components/Store';
-import Cart from './components/Cart';
-import PurchaseHistory from './components/PurchaseHistory';
-import Login from './components/Login';
-import Register from './components/Register';
-import Settings from './components/Settings';
-import './App.css';
+// קובץ האפליקציה הראשי - הרכיב הראשי של האפליקציה
+
+import React, { useState } from 'react'; // ייבוא React ו-hook לניהול state
+import { useAuthStore } from './store/authStore'; // ייבוא store לניהול אימות משתמשים
+import { useCartStore } from './store/cartStore'; // ייבוא store לניהול עגלת קניות
+import Header from './components/Header'; // רכיב כותרת עליונה
+import Sidebar from './components/Sidebar'; // רכיב תפריט צד
+import Store from './components/Store'; // רכיב החנות
+import Cart from './components/Cart'; // רכיב עגלת קניות
+import PurchaseHistory from './components/PurchaseHistory'; // רכיב היסטוריית רכישות
+import Login from './components/Login'; // רכיב התחברות
+import Register from './components/Register'; // רכיב הרשמה
+import Settings from './components/Settings'; // רכיב הגדרות
+import './App.css'; // ייבוא קובץ הסגנונות
 
 function App() {
+  // קבלת נתוני המשתמש והאימות מה-store
   const { user, isAuthenticated } = useAuthStore();
-  const { items } = useCartStore();
-  const [currentView, setCurrentView] = useState('home');
-  const [authView, setAuthView] = useState('login');
+  const { items } = useCartStore(); // קבלת פריטי העגלה
+  
+  // ניהול state של האפליקציה
+  const [currentView, setCurrentView] = useState('home'); // תצוגה נוכחית
+  const [authView, setAuthView] = useState('login'); // תצוגת אימות (התחברות/הרשמה)
 
+  // חישוב מספר הפריטים בעגלה
   const cartItemCount = items.reduce((sum, item) => sum + item.quantity, 0);
 
   // אם המשתמש לא מחובר, הצג את הדף הראשי עם כפתור התחברות
   if (!isAuthenticated) {
     return (
       <div className="home-page">
+        {/* כותרת הדף הראשי */}
         <header className="home-header">
           <div className="home-header-content">
             <h1 className="home-logo">🛒 ModernStore</h1>
             <button 
               className="btn btn-primary btn-large"
               onClick={() => {
-                setCurrentView('auth');
-                setAuthView('login');
+                setCurrentView('auth'); // מעבר לתצוגת אימות
+                setAuthView('login'); // הגדרת תצוגת התחברות
               }}
             >
               התחבר
@@ -38,9 +45,12 @@ function App() {
           </div>
         </header>
         
+        {/* תוכן הדף הראשי */}
         <main className="home-main">
           {currentView === 'home' ? (
+            // תצוגת דף הבית
             <div className="home-content">
+              {/* אזור גיבור - כותרת ראשית */}
               <div className="hero-section">
                 <h1>ברוכים הבאים לחנות המקוונת המודרנית</h1>
                 <p>גלה מגוון רחב של מוצרים איכותיים במחירים משתלמים</p>
@@ -66,6 +76,7 @@ function App() {
                 </div>
               </div>
               
+              {/* אזור תכונות - למה לבחור בנו */}
               <div className="features-section">
                 <h2>למה לבחור בנו?</h2>
                 <div className="features-grid">
@@ -93,6 +104,7 @@ function App() {
               </div>
             </div>
           ) : currentView === 'auth' ? (
+            // תצוגת אימות - התחברות או הרשמה
             <div className="auth-container">
               <div className="auth-content">
                 <div className="auth-header">
@@ -102,6 +114,7 @@ function App() {
                 </div>
                 
                 {authView === 'login' ? (
+                  // תצוגת התחברות
                   <>
                     <Login />
                     <div className="auth-divider">
@@ -121,6 +134,7 @@ function App() {
                     </button>
                   </>
                 ) : (
+                  // תצוגת הרשמה
                   <>
                     <Register onViewChange={setAuthView} />
                     <div className="auth-divider">
@@ -148,16 +162,18 @@ function App() {
     );
   }
 
+  // פונקציה להצגת התוכן המתאים לפי התצוגה הנוכחית
   const renderContent = () => {
     switch (currentView) {
       case 'store':
-        return <Store />;
+        return <Store />; // הצגת החנות
       case 'cart':
-        return <Cart onViewChange={setCurrentView} />;
+        return <Cart onViewChange={setCurrentView} />; // הצגת עגלת קניות
       case 'history':
-        return <PurchaseHistory onViewChange={setCurrentView} />;
+        return <PurchaseHistory onViewChange={setCurrentView} />; // הצגת היסטוריית רכישות
       case 'profile':
         return (
+          // הצגת פרופיל המשתמש
           <div className="profile-container fade-in">
             <div className="profile-header">
               <h1>👤 פרופיל משתמש</h1>
@@ -178,23 +194,27 @@ function App() {
           </div>
         );
       case 'settings':
-        return <Settings />;
+        return <Settings />; // הצגת הגדרות
       default:
-        return <Store />;
+        return <Store />; // ברירת מחדל - הצגת החנות
     }
   };
 
+  // החזרת המבנה הראשי של האפליקציה למשתמש מחובר
   return (
     <div className="app">
+      {/* כותרת עליונה עם מספר פריטי העגלה */}
       <Header 
         cartItemCount={cartItemCount} 
         onViewChange={setCurrentView}
       />
       <div className="app-content">
+        {/* תפריט צד לניווט */}
         <Sidebar 
           currentView={currentView} 
           onViewChange={setCurrentView} 
         />
+        {/* תוכן ראשי */}
         <main className="main-content">
           {renderContent()}
         </main>

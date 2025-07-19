@@ -8,91 +8,91 @@ A full-stack e-commerce application with React frontend and Node.js backend with
 
 ## 🚀 טכנולוגיות / Technologies
 
-### Frontend
-- **React** - UI Framework
-- **Vite** - Build tool
-- **Zustand** - State management
-- **Axios** - HTTP client
-- **CSS3** - Styling
+### Frontend (צד לקוח)
+- **React** - מסגרת עבודה לממשק משתמש
+- **Vite** - כלי בנייה מהיר
+- **Zustand** - ניהול מצב (state management)
+- **Axios** - לקוח HTTP לבקשות לשרת
+- **CSS3** - עיצוב וסגנונות
 
-### Backend
-- **Node.js** - Runtime environment
-- **Express.js** - Web framework
-- **MongoDB** - Database
-- **JWT** - Authentication
-- **Mongoose** - ODM
+### Backend (צד שרת)
+- **Node.js** - סביבת הרצה
+- **Express.js** - מסגרת עבודה לשרת
+- **MongoDB** - מסד נתונים
+- **JWT** - אימות משתמשים
+- **Mongoose** - Object Document Mapper למסד נתונים
 
 ## 📁 מבנה הפרויקט / Project Structure
 
 ```
 Final Proj/
-├── client/                 # React Frontend
+├── client/                 # React Frontend (צד לקוח)
 │   ├── src/
-│   │   ├── components/    # React Components
-│   │   ├── stores/        # Zustand Stores
-│   │   └── config/        # Configuration
-│   └── public/            # Static files
-├── server/                # Node.js Backend
-│   ├── routes/            # API Routes
-│   ├── controllers/       # Business Logic
-│   ├── models/            # MongoDB Models
-│   ├── services/          # External Services
-│   ├── dal/              # Data Access Layer
-│   ├── utils/             # Utilities
-│   └── config/            # Configuration
+│   │   ├── components/    # רכיבי React
+│   │   ├── stores/        # ניהול מצב עם Zustand
+│   │   └── config/        # הגדרות
+│   └── public/            # קבצים סטטיים
+├── server/                # Node.js Backend (צד שרת)
+│   ├── routes/            # נתיבי API
+│   ├── controllers/       # לוגיקה עסקית
+│   ├── models/            # מודלים של MongoDB
+│   ├── services/          # שירותים חיצוניים
+│   ├── dal/              # שכבת גישה לנתונים
+│   ├── utils/             # פונקציות עזר
+│   └── config/            # הגדרות
 └── README.md
 ```
 
 ## 🛠️ התקנה והפעלה / Installation & Setup
 
 ### דרישות מקדימות / Prerequisites
-- Node.js (v16 or higher)
-- MongoDB
-- npm or yarn
+- Node.js (גרסה 16 ומעלה)
+- MongoDB (מסד נתונים)
+- npm או yarn (מנהלי חבילות)
 
 ### התקנה / Installation
 
-1. **Clone the repository**
+1. **Clone the repository (שכפול המאגר)**
 ```bash
 git clone <repository-url>
 cd Final-Proj
 ```
 
-2. **Install dependencies**
+2. **Install dependencies (התקנת תלויות)**
 ```bash
-# Install server dependencies
+# התקנת תלויות השרת
 cd server
 npm install
 
-# Install client dependencies
+# התקנת תלויות הלקוח
 cd ../client
 npm install
 ```
 
-3. **Environment Setup**
+3. **Environment Setup (הגדרת סביבה)**
 ```bash
-# Create .env file in server directory
+# יצירת קובץ .env בתיקיית השרת
 cd ../server
 cp .env.example .env
 ```
 
-Edit the `.env` file with your configuration:
+עריכת קובץ ה-`.env` עם ההגדרות שלך:
 ```env
 PORT=3000
 MONGODB_URI=mongodb://localhost:27017/ecommerce
 JWT_SECRET=your-secret-key
 ```
 
-4. **Start the application**
+4. **Start the application (הפעלת האפליקציה)**
 ```bash
-# Start the server (from server directory)
+# הפעלת השרת (מתיקיית השרת)
 npm start
 
-# Start the client (from client directory)
+# הפעלת הלקוח (מתיקיית הלקוח)
 npm run dev
 ```
 
-The application will be available at:
+האפליקציה תהיה זמינה ב:
 - Frontend: http://localhost:5173
 - Backend: http://localhost:3000
 
@@ -134,33 +134,33 @@ The application will be available at:
 - הגנה על נתיבים / Route protection
 - אימות נתונים / Data validation
 
-## 📝 API Endpoints
+## 📝 API Endpoints (נקודות קצה)
 
-### Authentication
-- `POST /api/auth/register` - User registration
-- `POST /api/auth/login` - User login
+### Authentication (אימות)
+- `POST /api/auth/register` - רישום משתמש חדש
+- `POST /api/auth/login` - התחברות משתמש
 
-### Products
-- `GET /api/products` - Get all products
-- `GET /api/products/:id` - Get product by ID
+### Products (מוצרים)
+- `GET /api/products` - קבלת כל המוצרים
+- `GET /api/products/:id` - קבלת מוצר לפי מזהה
 
-### Cart
-- `GET /api/cart` - Get user cart
-- `POST /api/cart` - Add item to cart
-- `PUT /api/cart/:id` - Update cart item
-- `DELETE /api/cart/:id` - Remove cart item
+### Cart (עגלת קניות)
+- `GET /api/cart` - קבלת עגלת המשתמש
+- `POST /api/cart` - הוספת פריט לעגלה
+- `PUT /api/cart/:id` - עדכון פריט בעגלה
+- `DELETE /api/cart/:id` - הסרת פריט מהעגלה
 
-### Orders
-- `POST /api/orders` - Create order
-- `GET /api/orders` - Get user orders
+### Orders (הזמנות)
+- `POST /api/orders` - יצירת הזמנה
+- `GET /api/orders` - קבלת הזמנות המשתמש
 
 ## 🤝 תרומה / Contributing
 
-1. Fork the repository
-2. Create your feature branch (`git checkout -b feature/AmazingFeature`)
-3. Commit your changes (`git commit -m 'Add some AmazingFeature'`)
-4. Push to the branch (`git push origin feature/AmazingFeature`)
-5. Open a Pull Request
+1. Fork the repository (שכפול המאגר)
+2. Create your feature branch (יצירת ענף תכונה חדש)
+3. Commit your changes (שמירת השינויים)
+4. Push to the branch (דחיפה לענף)
+5. Open a Pull Request (פתיחת בקשת משיכה)
 
 ## 📄 רישיון / License
 
@@ -172,19 +172,19 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 ---
 
-## 🚀 Deploy
+## 🚀 Deploy (פריסה)
 
-### Frontend Deployment
-The React app can be deployed to:
+### Frontend Deployment (פריסת צד לקוח)
+האפליקציה React יכולה להיות מופצת ב:
 - Vercel
 - Netlify
 - GitHub Pages
 
-### Backend Deployment
-The Node.js server can be deployed to:
+### Backend Deployment (פריסת צד שרת)
+שרת Node.js יכול להיות מופץ ב:
 - Heroku
 - Railway
 - DigitalOcean
 - AWS
 
-Remember to set up environment variables on your deployment platform!
+זכור להגדיר משתני סביבה בפלטפורמת הפריסה שלך!
