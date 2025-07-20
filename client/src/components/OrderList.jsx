@@ -1,13 +1,17 @@
+// קומפוננטת OrderList - מציגה את רשימת ההזמנות במערכת
 import React, { useEffect } from 'react';
 import { useOrderStore } from '../store/orderStore';
 
 const OrderList = () => {
+  // קבלת פונקציות ונתונים מה-store של הזמנות
   const { orders, fetchOrders, updateOrderStatus, deleteOrder } = useOrderStore();
 
+  // טעינת ההזמנות מהשרת בעת טעינת הקומפוננטה
   useEffect(() => {
     fetchOrders();
   }, [fetchOrders]);
 
+  // שינוי סטטוס של הזמנה
   const handleStatusChange = async (orderId, newStatus) => {
     try {
       await updateOrderStatus(orderId, newStatus);
@@ -16,6 +20,7 @@ const OrderList = () => {
     }
   };
 
+  // מחיקת הזמנה
   const handleDeleteOrder = async (orderId) => {
     if (window.confirm('האם אתה בטוח שברצונך למחוק הזמנה זו?')) {
       try {
@@ -26,6 +31,7 @@ const OrderList = () => {
     }
   };
 
+  // המרת סטטוס להזמנה לטקסט בעברית
   const getStatusText = (status) => {
     switch (status) {
       case 'pending': return 'ממתין';
@@ -36,6 +42,7 @@ const OrderList = () => {
     }
   };
 
+  // קבלת אייקון מתאים לסטטוס
   const getStatusIcon = (status) => {
     switch (status) {
       case 'pending': return 'fas fa-clock';
@@ -46,6 +53,7 @@ const OrderList = () => {
     }
   };
 
+  // תצוגה כאשר אין הזמנות
   if (orders.length === 0) {
     return (
       <div className="order-list">
@@ -66,12 +74,14 @@ const OrderList = () => {
     );
   }
 
+  // תצוגת רשימת הזמנות
   return (
     <div className="order-list">
       <h3>
         <i className="fas fa-list"></i> רשימת הזמנות ({orders.length})
       </h3>
       
+      {/* מעבר על כל הזמנה */}
       {orders.map((order) => (
         <div key={order._id} className="order-item">
           <div className="order-header">
@@ -85,6 +95,7 @@ const OrderList = () => {
             </div>
             
             <div style={{ display: 'flex', gap: '10px', alignItems: 'center' }}>
+              {/* בחירת סטטוס להזמנה */}
               <select
                 className="order-status-select"
                 value={order.status}
@@ -109,6 +120,7 @@ const OrderList = () => {
                 <option value="cancelled">בוטל</option>
               </select>
               
+              {/* כפתור מחיקת הזמנה */}
               <button
                 onClick={() => handleDeleteOrder(order._id)}
                 className="btn btn-secondary"
@@ -119,6 +131,7 @@ const OrderList = () => {
             </div>
           </div>
 
+          {/* רשימת פריטים בהזמנה */}
           <div className="order-items">
             {order.items.map((item, index) => (
               <div key={index} className="item">

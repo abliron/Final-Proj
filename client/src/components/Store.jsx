@@ -1,8 +1,10 @@
+// קומפוננטת Store - מציגה את קטלוג המוצרים ומאפשרת חיפוש, צפייה והוספה לסל
 import React, { useState, useEffect } from 'react';
 import { FaShoppingCart, FaEye, FaStar, FaSearch } from 'react-icons/fa';
 import { useCartStore } from '../store/cartStore';
 
 const Store = () => {
+  // state לניהול מוצרים, חיפוש, טעינה, מוצר נבחר
   const [products, setProducts] = useState([]);
   const [filteredProducts, setFilteredProducts] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -10,15 +12,16 @@ const Store = () => {
   const [searchTerm, setSearchTerm] = useState('');
   const { addToCart } = useCartStore();
 
-  // Simple placeholder image data URL
+  // תמונת ברירת מחדל למוצרים ללא תמונה
   const placeholderImage = 'data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMzAwIGhlaWdodD0iMjAwIHZpZXdCb3g9IjAgMCAzMDAgMjAwIiBmaWxsPSJub25lIiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciPgo8cmVjdCB3aWR0aD0iMzAwIiBoZWlnaHQ9IjIwMCIgZmlsbD0iI0Y1RjVGNSIvPgo8cGF0aCBkPSJNMTUwIDUwQzE2Ni41NDkgNTAgMTgwIDYzLjQ1MSAxODAgODBDMTgwIDk2LjU0OSAxNjYuNTQ5IDExMCAxNTAgMTEwQzEzMy40NTEgMTEwIDEyMCA5Ni41NDkgMTIwIDgwQzEyMCA2My40NTEgMTMzLjQ1MSA1MCAxNTAgNTBaIiBmaWxsPSIjOTk5OTk5Ii8+CjxwYXRoIGQ9Ik0xMjAgMTYwQzEyMCAxNDMuNDUxIDEzMy40NTEgMTMwIDE1MCAxMzBIMTcwQzE4Ni41NDkgMTMwIDIwMCAxNDMuNDUxIDIwMCAxNjBWMjAwQzIwMCAyMTYuNTQ5IDE4Ni41NDkgMjMwIDE3MCAyMzBIMTUwQzEzMy40NTEgMjMwIDEyMCAyMTYuNTQ5IDEyMCAyMDBWMTYwWiIgZmlsbD0iIzk5OTk5OSIvPgo8L3N2Zz4K';
 
+  // טעינת מוצרים מה-API בעת טעינת הקומפוננטה
   useEffect(() => {
     fetchProducts();
   }, []);
 
+  // סינון מוצרים לפי מחרוזת חיפוש
   useEffect(() => {
-    // Filter products based on search term
     if (searchTerm.trim() === '') {
       setFilteredProducts(products);
     } else {
@@ -31,13 +34,14 @@ const Store = () => {
     }
   }, [searchTerm, products]);
 
+  // שליפת מוצרים מה-API
   const fetchProducts = async () => {
     try {
       setLoading(true);
       const response = await fetch('https://api.escuelajs.co/api/v1/products');
       const data = await response.json();
       
-      // Handle the API response structure - Platzi API returns array directly
+      // טיפול במבנה התשובה מה-API
       let productsArray = [];
       if (Array.isArray(data)) {
         productsArray = data;
@@ -49,7 +53,6 @@ const Store = () => {
       setFilteredProducts(productsArray);
     } catch (error) {
       console.error('Error fetching products:', error);
-      // Set empty arrays on error to prevent map errors
       setProducts([]);
       setFilteredProducts([]);
     } finally {
@@ -57,28 +60,33 @@ const Store = () => {
     }
   };
 
+  // הוספת מוצר לסל
   const handleAddToCart = (product) => {
-    // Pass the product object directly to addToCart
     addToCart(product);
   };
 
+  // צפייה בפרטי מוצר
   const handleViewDetails = (product) => {
     setSelectedProduct(product);
   };
 
+  // טיפול בשגיאת טעינת תמונה
   const handleImageError = (e) => {
     e.target.src = placeholderImage;
-    e.target.onerror = null; // Prevent infinite loop
+    e.target.onerror = null; // מניעת לולאה אינסופית
   };
 
+  // שינוי מחרוזת חיפוש
   const handleSearchChange = (e) => {
     setSearchTerm(e.target.value);
   };
 
+  // ניקוי שדה חיפוש
   const clearSearch = () => {
     setSearchTerm('');
   };
 
+  // תצוגת טעינה
   if (loading) {
     return (
       <div className="loading">
@@ -88,6 +96,7 @@ const Store = () => {
     );
   }
 
+  // תצוגת קטלוג מוצרים
   return (
     <div className="store-container fade-in">
       <div className="store-header">
@@ -95,7 +104,7 @@ const Store = () => {
         <p>גלה את המוצרים הטובים ביותר במחירים מעולים</p>
       </div>
 
-      {/* Search Bar */}
+      {/* שורת חיפוש */}
       <div className="search-container">
         <div className="search-input-wrapper">
           <FaSearch className="search-icon" />
@@ -123,6 +132,7 @@ const Store = () => {
       </div>
 
       <div className="product-grid">
+        {/* מעבר על כל מוצר */}
         {Array.isArray(filteredProducts) && filteredProducts.map((product) => (
           <div key={product.id} className="product-card">
             <div className="product-image-container">
@@ -167,7 +177,7 @@ const Store = () => {
         ))}
       </div>
 
-      {/* No results message */}
+      {/* הודעה כאשר אין תוצאות */}
       {searchTerm && Array.isArray(filteredProducts) && filteredProducts.length === 0 && (
         <div className="no-results">
           <div className="no-results-icon">🔍</div>
@@ -182,7 +192,7 @@ const Store = () => {
         </div>
       )}
 
-      {/* Product Details Modal */}
+      {/* מודל פרטי מוצר */}
       {selectedProduct && (
         <div className="modal-overlay" onClick={() => setSelectedProduct(null)}>
           <div className="modal-content" onClick={(e) => e.stopPropagation()}>

@@ -1,26 +1,29 @@
+// קומפוננטת UserProfile - מציגה את פרטי המשתמש, סטטיסטיקות, היסטוריה ופעילות
 import React, { useState, useEffect } from 'react';
 import { useAuthStore } from '../store/authStore';
 import { useOrderStore } from '../store/orderStore';
 
 const UserProfile = () => {
+  // קבלת נתוני משתמש ופרופיל מה-store
   const { user, getProfile } = useAuthStore();
   const { orders } = useOrderStore();
   const [activeTab, setActiveTab] = useState('overview');
 
+  // טעינת פרופיל מהשרת בעת טעינת הקומפוננטה
   useEffect(() => {
     getProfile();
   }, []);
 
-  // Calculate user statistics
+  // חישוב סטטיסטיקות משתמש
   const totalOrders = orders?.length || 0;
   const completedOrders = orders?.filter(order => order.status === 'completed').length || 0;
   const totalSpent = orders?.reduce((sum, order) => sum + (order.total || 0), 0) || 0;
   const averageOrderValue = totalOrders > 0 ? totalSpent / totalOrders : 0;
 
-  // Get recent orders
+  // קבלת הזמנות אחרונות
   const recentOrders = orders?.slice(0, 5) || [];
 
-  // Get order history by month
+  // היסטוריית הזמנות לפי חודש
   const orderHistory = orders?.reduce((acc, order) => {
     const month = new Date(order.createdAt).toLocaleDateString('he-IL', { month: 'long', year: 'numeric' });
     if (!acc[month]) {
@@ -31,7 +34,7 @@ const UserProfile = () => {
     return acc;
   }, {}) || {};
 
-  // Safety check - if user doesn't exist, show loading or error
+  // אם אין משתמש - תצוגת טעינה
   if (!user) {
     return (
       <div className="profile-container">
@@ -47,6 +50,7 @@ const UserProfile = () => {
     );
   }
 
+  // תצוגת פרופיל משתמש
   return (
     <div className="profile-container">
       <div className="profile-header">
@@ -71,7 +75,7 @@ const UserProfile = () => {
         </div>
       </div>
 
-      {/* Profile Stats */}
+      {/* סטטיסטיקות משתמש */}
       <div className="profile-stats">
         <div className="stat-card">
           <div className="stat-icon" style={{ background: 'var(--primary-gradient)' }}>
@@ -114,7 +118,7 @@ const UserProfile = () => {
         </div>
       </div>
 
-      {/* Profile Tabs */}
+      {/* טאבים של פרופיל */}
       <div className="profile-tabs">
         <button
           className={`profile-tab ${activeTab === 'overview' ? 'active' : ''}`}
@@ -136,7 +140,7 @@ const UserProfile = () => {
         </button>
       </div>
 
-      {/* Overview Tab */}
+      {/* טאב סקירה כללית */}
       {activeTab === 'overview' && (
         <div className="profile-section">
           <h3>
@@ -205,7 +209,7 @@ const UserProfile = () => {
         </div>
       )}
 
-      {/* History Tab */}
+      {/* טאב היסטוריית הזמנות */}
       {activeTab === 'history' && (
         <div className="profile-section">
           <h3>
@@ -257,7 +261,7 @@ const UserProfile = () => {
         </div>
       )}
 
-      {/* Activity Tab */}
+      {/* טאב פעילות אחרונה */}
       {activeTab === 'activity' && (
         <div className="profile-section">
           <h3>

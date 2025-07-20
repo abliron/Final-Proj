@@ -1,20 +1,24 @@
+// קומפוננטת PurchaseHistory - מציגה את היסטוריית הרכישות של המשתמש
 import React, { useState, useEffect } from 'react';
 import { FaHistory, FaCalendar, FaCreditCard, FaBox, FaTimesCircle } from 'react-icons/fa';
 import { API_ENDPOINTS } from '../config/api';
 
 const PurchaseHistory = ({ onViewChange }) => {
+  // state לניהול הזמנות, טעינה, הזמנה נבחרת וביטול
   const [orders, setOrders] = useState([]);
   const [loading, setLoading] = useState(true);
   const [selectedOrder, setSelectedOrder] = useState(null);
   const [cancellingOrderId, setCancellingOrderId] = useState(null);
 
-  // Simple placeholder image data URL
+  // תמונת ברירת מחדל למוצרים ללא תמונה
   const placeholderImage = 'data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNjAiIGhlaWdodD0iNjAiIHZpZXdCb3g9IjAgMCA2MCA2MCIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPHJlY3Qgd2lkdGg9IjYwIiBoZWlnaHQ9IjYwIiBmaWxsPSIjRjVGNUY1Ii8+CjxwYXRoIGQ9Ik0zMCAxNUMzMS42NTY5IDE1IDMzIDE2LjM0MzEgMzMgMThDMzMgMTkuNjU2OSAzMS42NTY5IDIxIDMwIDIxQzI4LjM0MzEgMjEgMjcgMTkuNjU2OSAyNyAxOEMyNyAxNi4zNDMxIDI4LjM0MzEgMTUgMzAgMTVaIiBmaWxsPSIjOTk5OTk5Ii8+CjxwYXRoIGQ9Ik0yNCA0MUMyNCAzOC43OTQ5IDI1Ljc5NDkgMzcgMjggMzdIMzJDMzQuMjA1MSAzNyAzNiAzOC43OTQ5IDM2IDQxVjQzQzM2IDQ1LjIwNTEgMzQuMjA1MSA0NyAzMiA0N0gyOEMyNS43OTQ5IDQ3IDI0IDQ1LjIwNTEgMjQgNDNWNDFaIiBmaWxsPSIjOTk5OTk5Ii8+Cjwvc3ZnPgo=';
 
+  // טעינת ההזמנות מהשרת בעת טעינת הקומפוננטה
   useEffect(() => {
     fetchOrders();
   }, []);
 
+  // שליפת ההזמנות מהשרת
   const fetchOrders = async () => {
     try {
       setLoading(true);
@@ -38,6 +42,7 @@ const PurchaseHistory = ({ onViewChange }) => {
     }
   };
 
+  // ביטול הזמנה
   const cancelOrder = async (orderId) => {
     if (!window.confirm('האם אתה בטוח שברצונך לבטל את ההזמנה?')) return;
     setCancellingOrderId(orderId);
@@ -65,6 +70,7 @@ const PurchaseHistory = ({ onViewChange }) => {
     }
   };
 
+  // עיצוב תאריך
   const formatDate = (dateString) => {
     const date = new Date(dateString);
     return date.toLocaleDateString('he-IL', {
@@ -76,6 +82,7 @@ const PurchaseHistory = ({ onViewChange }) => {
     });
   };
 
+  // קבלת צבע סטטוס
   const getStatusColor = (status) => {
     switch (status) {
       case 'completed':
@@ -89,6 +96,7 @@ const PurchaseHistory = ({ onViewChange }) => {
     }
   };
 
+  // קבלת טקסט סטטוס בעברית
   const getStatusText = (status) => {
     switch (status) {
       case 'completed':
@@ -102,18 +110,20 @@ const PurchaseHistory = ({ onViewChange }) => {
     }
   };
 
+  // מעבר לחנות
   const handleNavigateToStore = () => {
     if (onViewChange) {
       onViewChange('store');
     }
   };
 
+  // טיפול בשגיאת טעינת תמונה
   const handleImageError = (e) => {
     e.target.src = placeholderImage;
-    e.target.onerror = null; // Prevent infinite loop
+    e.target.onerror = null; // מניעת לולאה אינסופית
   };
 
-  // Helper function to get the correct image URL
+  // קבלת כתובת תמונה של פריט
   const getItemImage = (item) => {
     if (item.image && item.image !== '') {
       return item.image;
@@ -121,6 +131,7 @@ const PurchaseHistory = ({ onViewChange }) => {
     return placeholderImage;
   };
 
+  // תצוגת טעינה
   if (loading) {
     return (
       <div className="loading">
@@ -130,6 +141,7 @@ const PurchaseHistory = ({ onViewChange }) => {
     );
   }
 
+  // תצוגה כאשר אין רכישות
   if (orders.length === 0) {
     return (
       <div className="purchase-history-empty fade-in">
@@ -148,6 +160,7 @@ const PurchaseHistory = ({ onViewChange }) => {
     );
   }
 
+  // תצוגת היסטוריית רכישות
   return (
     <div className="purchase-history-container fade-in">
       <div className="purchase-history-header">
@@ -156,6 +169,7 @@ const PurchaseHistory = ({ onViewChange }) => {
       </div>
 
       <div className="orders-grid">
+        {/* מעבר על כל הזמנה */}
         {orders.map((order) => (
           <div key={order._id} className="order-card">
             <div className="order-header">
@@ -169,6 +183,7 @@ const PurchaseHistory = ({ onViewChange }) => {
             </div>
 
             <div className="order-items">
+              {/* מעבר על כל פריט בהזמנה */}
               {order.items.map((item, index) => (
                 <div key={index} className="order-item">
                   <div className="order-item-image">
@@ -194,7 +209,7 @@ const PurchaseHistory = ({ onViewChange }) => {
               </div>
             </div>
             
-            {/* New row for status and actions */}
+            {/* שורת סטטוס ופעולות */}
             <div className="order-actions-row">
               <div 
                 className="order-status"
@@ -225,7 +240,7 @@ const PurchaseHistory = ({ onViewChange }) => {
         ))}
       </div>
 
-      {/* Order Details Modal */}
+      {/* מודל פרטי הזמנה */}
       {selectedOrder && (
         <div className="modal-overlay" onClick={() => setSelectedOrder(null)}>
           <div className="modal-content order-details-modal" onClick={(e) => e.stopPropagation()}>
@@ -264,6 +279,7 @@ const PurchaseHistory = ({ onViewChange }) => {
                 
                 <div className="order-details-items">
                   <h4>פריטי ההזמנה:</h4>
+                  {/* מעבר על כל פריט במודל */}
                   {selectedOrder.items.map((item, index) => (
                     <div key={index} className="detail-item">
                       <div className="detail-item-image">

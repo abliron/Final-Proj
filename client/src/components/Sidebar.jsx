@@ -1,3 +1,4 @@
+// קומפוננטת Sidebar - תפריט צד לניווט בין דפי האפליקציה
 import React from 'react';
 import {
   FaHome,
@@ -10,7 +11,9 @@ import {
   FaStar
 } from 'react-icons/fa';
 
+// props: currentView - תצוגה נוכחית, onViewChange - פונקציה לשינוי תצוגה
 const Sidebar = ({ currentView, onViewChange }) => {
+  // הגדרת פריטי התפריט הראשי
   const menuItems = [
     { id: 'store', label: 'קטלוג מוצרים', icon: FaShoppingBag },
     { id: 'cart', label: 'סל קניות', icon: FaShoppingCart },
@@ -25,6 +28,7 @@ const Sidebar = ({ currentView, onViewChange }) => {
         <p></p>
       </div>
 
+      {/* תפריט ניווט ראשי */}
       <nav className="sidebar-nav">
         {menuItems.map((item) => {
           const IconComponent = item.icon;
@@ -41,6 +45,7 @@ const Sidebar = ({ currentView, onViewChange }) => {
         })}
       </nav>
 
+      {/* קטגוריות נוספות */}
       <div className="sidebar-footer">
         <div className="category-section">
           <h3>קטגוריות</h3>

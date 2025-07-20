@@ -1,14 +1,18 @@
+// קומפוננטת Settings - דף הגדרות משתמש, פרופיל, סיסמה והעדפות
 import React, { useState, useEffect } from 'react';
 import { FaUser, FaEnvelope, FaPhone, FaMapMarkerAlt, FaMoon, FaSun, FaBell, FaLock, FaKey, FaSlidersH, FaSave, FaEdit } from 'react-icons/fa';
 import { useAuthStore } from '../store/authStore';
 
 const Settings = () => {
+  // קבלת נתוני משתמש ופונקציות מה-store
   const { user, token, updateUser, getProfile } = useAuthStore();
+  // state לניהול טאב פעיל, הודעות, מצב כהה, טעינה
   const [activeTab, setActiveTab] = useState('profile');
   const [message, setMessage] = useState('');
   const [isDarkMode, setIsDarkMode] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
 
+  // state לפרטי פרופיל
   const [profileData, setProfileData] = useState({
     name: user?.name || '',
     email: user?.email || '',
@@ -21,12 +25,14 @@ const Settings = () => {
     }
   });
 
+  // state לשינוי סיסמה
   const [passwordData, setPasswordData] = useState({
     currentPassword: '',
     newPassword: '',
     confirmPassword: ''
   });
 
+  // state להעדפות משתמש
   const [preferences, setPreferences] = useState({
     notifications: user?.preferences?.notifications ?? true,
     emailUpdates: user?.preferences?.emailUpdates ?? true,
@@ -34,7 +40,7 @@ const Settings = () => {
     language: user?.preferences?.language ?? 'he'
   });
 
-  // Load dark mode preference from localStorage and user preferences
+  // טעינת מצב כהה מה-localStorage ומהעדפות המשתמש
   useEffect(() => {
     const savedDarkMode = localStorage.getItem('darkMode') === 'true' || user?.preferences?.darkMode;
     setIsDarkMode(savedDarkMode);
@@ -42,7 +48,7 @@ const Settings = () => {
     applyDarkMode(savedDarkMode);
   }, [user]);
 
-  // Update profile data when user changes
+  // עדכון פרטי פרופיל כאשר המשתמש משתנה
   useEffect(() => {
     setProfileData({
       name: user?.name || '',
@@ -57,10 +63,12 @@ const Settings = () => {
     });
   }, [user]);
 
+  // טעינת פרופיל מהשרת בעת טעינת הקומפוננטה
   useEffect(() => {
     getProfile();
   }, []);
 
+  // הפעלת/כיבוי מצב כהה ב-body
   const applyDarkMode = (isDark) => {
     if (isDark) {
       document.body.classList.add('dark-mode');
@@ -69,6 +77,7 @@ const Settings = () => {
     }
   };
 
+  // שליחת טופס עדכון פרופיל
   const handleProfileUpdate = async (e) => {
     e.preventDefault();
     setIsLoading(true);
@@ -101,6 +110,7 @@ const Settings = () => {
     }
   };
 
+  // שליחת טופס שינוי סיסמה
   const handlePasswordChange = async (e) => {
     e.preventDefault();
     if (passwordData.newPassword !== passwordData.confirmPassword) {
@@ -149,6 +159,7 @@ const Settings = () => {
     }
   };
 
+  // שינוי העדפה (כולל darkMode)
   const handlePreferenceChange = async (key, value) => {
     const newPreferences = { ...preferences, [key]: value };
     setPreferences(newPreferences);
@@ -173,7 +184,7 @@ const Settings = () => {
 
       if (response.ok) {
         setMessage('העדפות עודכנו בהצלחה!');
-        // Update user preferences in store
+        // עדכון העדפות ב-store
         updateUser({ ...user, preferences: { ...user.preferences, [key]: value } });
         setTimeout(() => setMessage(''), 3000);
       } else {
@@ -187,6 +198,7 @@ const Settings = () => {
     }
   };
 
+  // שינוי שדה בכתובת
   const handleAddressChange = (field, value) => {
     setProfileData(prev => ({
       ...prev,
@@ -197,6 +209,7 @@ const Settings = () => {
     }));
   };
 
+  // תצוגת דף הגדרות
   return (
     <div className="settings-container fade-in">
       <div className="settings-header">
@@ -204,13 +217,14 @@ const Settings = () => {
         <p>נהל את הפרופיל, הסיסמה והעדפות שלך</p>
       </div>
 
+      {/* הודעת הצלחה/שגיאה */}
       {message && (
         <div className={`message ${message.includes('בהצלחה') ? 'success' : 'error'}`}>
           {message}
         </div>
       )}
 
-      {/* Settings Tabs */}
+      {/* טאבים של הגדרות */}
       <div className="settings-tabs">
         <button
           className={`settings-tab ${activeTab === 'profile' ? 'active' : ''}`}
@@ -232,7 +246,7 @@ const Settings = () => {
         </button>
       </div>
 
-      {/* Profile Settings */}
+      {/* הגדרות פרופיל */}
       {activeTab === 'profile' && (
         <div className="settings-section">
           <h3>
@@ -332,7 +346,7 @@ const Settings = () => {
         </div>
       )}
 
-      {/* Password Settings */}
+      {/* הגדרות סיסמה */}
       {activeTab === 'password' && (
         <div className="settings-section">
           <h3>
@@ -385,7 +399,7 @@ const Settings = () => {
         </div>
       )}
 
-      {/* Preferences Settings */}
+      {/* הגדרות העדפות */}
       {activeTab === 'preferences' && (
         <div className="settings-section">
           <h3>

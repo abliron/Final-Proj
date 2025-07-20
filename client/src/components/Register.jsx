@@ -1,8 +1,10 @@
+// קומפוננטת Register - טופס הרשמה ליצירת משתמש חדש
 import React, { useState } from 'react';
 import { FaUserPlus, FaEnvelope, FaLock, FaUser, FaCheckCircle } from 'react-icons/fa';
 import { useAuthStore } from '../store/authStore';
 
 const Register = ({ onViewChange }) => {
+  // state לניהול שדות הטופס, טעינה, שגיאה והצלחה
   const [formData, setFormData] = useState({
     name: '',
     email: '',
@@ -13,8 +15,9 @@ const Register = ({ onViewChange }) => {
   const [error, setError] = useState('');
   const [success, setSuccess] = useState(false);
   
-  const { register } = useAuthStore();
+  const { register } = useAuthStore(); // פונקציית הרשמה מה-store
 
+  // טיפול בשינוי שדות הטופס
   const handleChange = (e) => {
     setFormData({
       ...formData,
@@ -22,12 +25,14 @@ const Register = ({ onViewChange }) => {
     });
   };
 
+  // טיפול בשליחת הטופס
   const handleSubmit = async (e) => {
     e.preventDefault();
     setLoading(true);
     setError('');
     setSuccess(false);
 
+    // בדיקת התאמת סיסמאות
     if (formData.password !== formData.confirmPassword) {
       setError('הסיסמאות אינן תואמות');
       setLoading(false);
@@ -35,6 +40,7 @@ const Register = ({ onViewChange }) => {
     }
 
     try {
+      // ניסיון הרשמה
       const success = await register(formData.name, formData.email, formData.password);
       if (success) {
         setSuccess(true);
@@ -45,7 +51,7 @@ const Register = ({ onViewChange }) => {
           confirmPassword: ''
         });
         
-        // Show success message for 2 seconds, then switch to login
+        // הצגת הודעת הצלחה ומעבר לעמוד התחברות לאחר 2 שניות
         setTimeout(() => {
           if (onViewChange) {
             onViewChange('login');
@@ -61,11 +67,13 @@ const Register = ({ onViewChange }) => {
     }
   };
 
+  // תצוגת טופס הרשמה
   return (
     <div className="auth-form">
       <h2>הרשמה</h2>
       <p>צור חשבון חדש כדי להתחיל</p>
       
+      {/* הודעת הצלחה */}
       {success && (
         <div className="success-message">
           <FaCheckCircle />
@@ -73,13 +81,16 @@ const Register = ({ onViewChange }) => {
         </div>
       )}
       
+      {/* הודעת שגיאה */}
       {error && (
         <div className="error-message">
           {error}
         </div>
       )}
       
+      {/* טופס הרשמה */}
       <form onSubmit={handleSubmit}>
+        {/* שדה שם מלא */}
         <div className="form-group">
           <label className="form-label">
             <FaUser /> שם מלא
@@ -96,6 +107,7 @@ const Register = ({ onViewChange }) => {
           />
         </div>
         
+        {/* שדה אימייל */}
         <div className="form-group">
           <label className="form-label">
             <FaEnvelope /> אימייל
@@ -112,6 +124,7 @@ const Register = ({ onViewChange }) => {
           />
         </div>
         
+        {/* שדה סיסמה */}
         <div className="form-group">
           <label className="form-label">
             <FaLock /> סיסמה
@@ -129,6 +142,7 @@ const Register = ({ onViewChange }) => {
           />
         </div>
         
+        {/* שדה אימות סיסמה */}
         <div className="form-group">
           <label className="form-label">
             <FaLock /> אימות סיסמה
@@ -145,6 +159,7 @@ const Register = ({ onViewChange }) => {
           />
         </div>
         
+        {/* כפתור שליחה */}
         <button
           type="submit"
           className="btn btn-primary btn-large"

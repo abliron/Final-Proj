@@ -1,6 +1,9 @@
+// קומפוננטת Toast - הודעה קופצת להצגת סטטוס/שגיאה/הצלחה
 import React, { useEffect } from 'react';
 
+// props: message - תוכן ההודעה, type - סוג (info/success/error/warning), onClose - סגירה, duration - משך זמן
 const Toast = ({ message, type = 'info', onClose, duration = 5000 }) => {
+  // סגירת ההודעה אוטומטית לאחר זמן מוגדר
   useEffect(() => {
     if (duration > 0) {
       const timer = setTimeout(() => {
@@ -11,6 +14,7 @@ const Toast = ({ message, type = 'info', onClose, duration = 5000 }) => {
     }
   }, [duration, onClose]);
 
+  // קבלת אייקון לפי סוג ההודעה
   const getIcon = () => {
     switch (type) {
       case 'success':
@@ -25,6 +29,7 @@ const Toast = ({ message, type = 'info', onClose, duration = 5000 }) => {
     }
   };
 
+  // קבלת רקע גרפי לפי סוג ההודעה
   const getBackground = () => {
     switch (type) {
       case 'success':
@@ -39,6 +44,7 @@ const Toast = ({ message, type = 'info', onClose, duration = 5000 }) => {
     }
   };
 
+  // תצוגת ההודעה הקופצת
   return (
     <div 
       className="toast"
