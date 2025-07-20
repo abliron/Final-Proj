@@ -1,5 +1,4 @@
 {
-  // קובץ הגדרות הפרויקט הראשי - מגדיר את כל התלויות והסקריפטים
   "name": "ecommerce-fullstack-app",
   "description": "Full-stack e-commerce application with React frontend and Node.js backend",
   "version": "1.0.0",
@@ -17,54 +16,48 @@
   "author": "Liron",
   "license": "MIT",
   "scripts": {
-    // הסקריפטים להרצת הפרויקט
-    "dev": "vite", // הרצת שרת הפיתוח של Vite
-    "build": "vite build", // בניית הפרויקט לייצור
-    "lint": "eslint .", // בדיקת קוד עם ESLint
-    "preview": "vite preview", // תצוגה מקדימה של הבנייה
-    "start": "concurrently \"npm run server\" \"npm run client\"", // הרצת שרת ולקוח במקביל
-    "start:all": "concurrently \"npm run server\" \"npm run client\"", // הרצת כל השירותים
-    "server": "cd server && npm start", // הרצת שרת בלבד
-    "client": "cd client && npm start", // הרצת לקוח בלבד
-    "install:all": "npm install && cd server && npm install && cd ../client && npm install", // התקנת כל התלויות
-    "build:all": "npm run build && cd server && npm run build", // בניית כל הפרויקט
-    "test": "echo \"No tests specified\" && exit 0" // סקריפט לבדיקות (לא מוגדר כרגע)
+    "dev": "vite",
+    "build": "vite build",
+    "lint": "eslint .",
+    "preview": "vite preview",
+    "start": "concurrently \"npm run server\" \"npm run client\"",
+    "start:all": "concurrently \"npm run server\" \"npm run client\"",
+    "server": "cd server && npm start",
+    "client": "cd client && npm start",
+    "install:all": "npm install && cd server && npm install && cd ../client && npm install",
+    "build:all": "npm run build && cd server && npm run build",
+    "test": "echo \"No tests specified\" && exit 0"
   },
   "dependencies": {
-    // תלויות ראשיות - ספריות שנדרשות להרצת הפרויקט
-    "all": "^0.0.0", // תלות כללית
-    "axios": "^1.10.0", // ספרייה לבקשות HTTP
-    "mongodb": "^6.17.0", // דרייבר למסד נתונים MongoDB
-    "react": "^19.1.0", // ספריית React
-    "react-dom": "^19.1.0", // DOM renderer ל-React
-    "zustand": "^5.0.6" // ניהול state (מצב) בפרויקט
+    "all": "^0.0.0",
+    "axios": "^1.10.0",
+    "mongodb": "^6.17.0",
+    "react": "^19.1.0",
+    "react-dom": "^19.1.0",
+    "zustand": "^5.0.6"
   },
   "devDependencies": {
-    // תלויות פיתוח - ספריות שנדרשות רק בזמן פיתוח
-    "@eslint/js": "^9.30.1", // תצורה של ESLint
-    "@types/react": "^19.1.8", // הגדרות TypeScript ל-React
-    "@types/react-dom": "^19.1.6", // הגדרות TypeScript ל-React DOM
-    "@vitejs/plugin-react": "^4.6.0", // פלאגין React ל-Vite
-    "concurrently": "^8.2.2", // הרצת פקודות במקביל
-    "eslint": "^9.30.1", // כלי לבדיקת קוד
-    "eslint-plugin-react-hooks": "^5.2.0", // פלאגין ESLint ל-React Hooks
-    "eslint-plugin-react-refresh": "^0.4.20", // פלאגין ESLint ל-React Refresh
-    "globals": "^16.3.0", // משתנים גלובליים
-    "vite": "^7.0.4" // כלי בנייה מהיר
+    "@eslint/js": "^9.30.1",
+    "@types/react": "^19.1.8",
+    "@types/react-dom": "^19.1.6",
+    "@vitejs/plugin-react": "^4.6.0",
+    "concurrently": "^8.2.2",
+    "eslint": "^9.30.1",
+    "eslint-plugin-react-hooks": "^5.2.0",
+    "eslint-plugin-react-refresh": "^0.4.20",
+    "globals": "^16.3.0",
+    "vite": "^7.0.4"
   },
   "engines": {
-    // גרסאות Node.js ו-npm הנדרשות
     "node": ">=16.0.0",
     "npm": ">=8.0.0"
   },
   "repository": {
-    // מידע על המאגר
     "type": "git",
     "url": "https://github.com/yourusername/ecommerce-fullstack-app.git"
   },
   "bugs": {
-    // קישור לדיווח באגים
     "url": "https://github.com/yourusername/ecommerce-fullstack-app/issues"
   },
-  "homepage": "https://github.com/yourusername/ecommerce-fullstack-app#readme" // דף הבית של הפרויקט
+  "homepage": "https://github.com/yourusername/ecommerce-fullstack-app#readme"
 }

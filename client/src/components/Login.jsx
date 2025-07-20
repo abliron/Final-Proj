@@ -43,6 +43,7 @@ const Login = () => {
     }
   };
 
+  // החזרת מבנה ה-JSX של טופס ההתחברות
   return (
     <div className="auth-form">
       {/* כותרת הטופס */}
