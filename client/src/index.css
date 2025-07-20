@@ -1,10 +1,11 @@
-/* Modern Amazon-inspired CSS Reset and Global Styles */
+
 * {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
 }
 
+/* עיצוב בסיסי של body כולל תמיכה במצב כהה */
 body {
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
   background-color: #f8f9fa;
@@ -14,12 +15,13 @@ body {
   overflow-x: hidden;
 }
 
-/* Dark Mode Styles */
+/* מצב כהה לכל האתר */
 body.dark-mode {
   background-color: #1a1a1a;
   color: #ffffff;
 }
 
+/* כרטיסים, סיידבר ומודלים במצב כהה */
 body.dark-mode .card,
 body.dark-mode .sidebar,
 body.dark-mode .modal-content {
@@ -27,6 +29,7 @@ body.dark-mode .modal-content {
   color: #ffffff;
 }
 
+/* סיידבר במצב כהה */
 body.dark-mode .sidebar-nav a,
 body.dark-mode .sidebar-nav button {
   color: #ffffff;
@@ -82,14 +85,14 @@ body.dark-mode .settings-section {
   color: #ffffff;
 }
 
-/* Modern Container */
+/* קונטיינר מרכזי */
 .container {
   max-width: 1200px;
   margin: 0 auto;
   padding: 0 20px;
 }
 
-/* Modern Header */
+/* עיצוב כותרת עליונה (Header) מודרני ודביק */
 .header {
   background: linear-gradient(135deg, #232f3e 0%, #37475a 100%);
   color: white;

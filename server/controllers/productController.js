@@ -1,18 +1,20 @@
+// בקר מוצרים - מטפל בפעולות CRUD, חיפוש, סינון, דירוג וקטגוריות
 const Product = require('../models/Product');
 
-// Get all products (public)
+// שליפת כל המוצרים (פומבי)
 exports.getProducts = async (req, res) => {
   try {
+    // חילוץ פרמטרים מה-query לסינון, חיפוש, מיון ודפדוף
     const { category, search, sort = 'createdAt', order = 'desc', page = 1, limit = 12 } = req.query;
     
     let query = { isActive: true };
     
-    // Filter by category
+    // סינון לפי קטגוריה
     if (category && category !== 'all') {
       query.category = category;
     }
     
-    // Search functionality
+    // חיפוש לפי שם, תיאור או תגיות
     if (search) {
       query.$or = [
         { name: { $regex: search, $options: 'i' } },
@@ -23,11 +25,13 @@ exports.getProducts = async (req, res) => {
     
     const skip = (page - 1) * limit;
     
+    // שליפת מוצרים עם סינון, מיון ודפדוף
     const products = await Product.find(query)
       .sort({ [sort]: order === 'desc' ? -1 : 1 })
       .skip(skip)
       .limit(parseInt(limit));
     
+    // סך הכל מוצרים לסינון
     const total = await Product.countDocuments(query);
     
     res.json({
@@ -45,7 +49,7 @@ exports.getProducts = async (req, res) => {
   }
 };
 
-// Get single product (public)
+// שליפת מוצר בודד (פומבי)
 exports.getProduct = async (req, res) => {
   try {
     const product = await Product.findById(req.params.id);
@@ -58,7 +62,7 @@ exports.getProduct = async (req, res) => {
   }
 };
 
-// Create product (admin only)
+// יצירת מוצר חדש (מנהלים בלבד)
 exports.createProduct = async (req, res) => {
   try {
     const product = new Product(req.body);
@@ -69,7 +73,7 @@ exports.createProduct = async (req, res) => {
   }
 };
 
-// Update product (admin only)
+// עדכון מוצר קיים (מנהלים בלבד)
 exports.updateProduct = async (req, res) => {
   try {
     const product = await Product.findByIdAndUpdate(
@@ -86,7 +90,7 @@ exports.updateProduct = async (req, res) => {
   }
 };
 
-// Delete product (admin only)
+// מחיקת מוצר (מנהלים בלבד)
 exports.deleteProduct = async (req, res) => {
   try {
     const product = await Product.findByIdAndDelete(req.params.id);
@@ -99,11 +103,12 @@ exports.deleteProduct = async (req, res) => {
   }
 };
 
-// Add review to product (authenticated users)
+// הוספת ביקורת למוצר (משתמשים מחוברים)
 exports.addReview = async (req, res) => {
   try {
     const { rating, comment } = req.body;
     
+    // בדיקת תקינות דירוג
     if (!rating || rating < 1 || rating > 5) {
       return res.status(400).json({ message: 'דירוג חייב להיות בין 1 ל-5' });
     }
@@ -113,7 +118,7 @@ exports.addReview = async (req, res) => {
       return res.status(404).json({ message: 'מוצר לא נמצא' });
     }
     
-    // Check if user already reviewed this product
+    // בדיקה אם המשתמש כבר דירג מוצר זה
     const existingReview = product.reviews.find(
       review => review.user.toString() === req.userId
     );
@@ -122,13 +127,14 @@ exports.addReview = async (req, res) => {
       return res.status(400).json({ message: 'כבר דירגת מוצר זה' });
     }
     
+    // הוספת ביקורת חדשה
     product.reviews.push({
       user: req.userId,
       rating,
       comment
     });
     
-    // Update average rating
+    // עדכון דירוג ממוצע
     const totalRating = product.reviews.reduce((sum, review) => sum + review.rating, 0);
     product.rating = totalRating / product.reviews.length;
     
@@ -139,7 +145,7 @@ exports.addReview = async (req, res) => {
   }
 };
 
-// Get categories (public)
+// שליפת כל הקטגוריות (פומבי)
 exports.getCategories = async (req, res) => {
   try {
     const categories = await Product.distinct('category');
@@ -149,7 +155,7 @@ exports.getCategories = async (req, res) => {
   }
 };
 
-// Get featured products (public)
+// שליפת מוצרים מומלצים (פומבי)
 exports.getFeaturedProducts = async (req, res) => {
   try {
     const products = await Product.find({ isActive: true })
@@ -161,7 +167,7 @@ exports.getFeaturedProducts = async (req, res) => {
   }
 };
 
-// Seed products (for development)
+// יצירת מוצרים לדוגמה (לסביבת פיתוח)
 exports.seedProducts = async (req, res) => {
   try {
     const sampleProducts = [

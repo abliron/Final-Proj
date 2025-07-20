@@ -44,19 +44,6 @@ const Sidebar = ({ currentView, onViewChange }) => {
           );
         })}
       </nav>
-
-      {/* קטגוריות נוספות */}
-      <div className="sidebar-footer">
-        <div className="category-section">
-          <h3>קטגוריות</h3>
-          <button className="category-link">
-            <FaHeart /> מועדפים
-          </button>
-          <button className="category-link">
-            <FaStar /> מוצרים מובילים
-          </button>
-        </div>
-      </div>
     </div>
   );
 };

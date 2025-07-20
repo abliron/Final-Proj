@@ -1,6 +1,8 @@
+// בקר הזמנות - מטפל ביצירת, שליפת, עדכון ומחיקת הזמנות
 const Order = require('../models/Order');
 const User = require('../models/User');
 
+// יצירת הזמנה חדשה
 exports.createOrder = async (req, res) => {
   try {
     console.log('=== CREATE ORDER DEBUG ===');
@@ -8,14 +10,16 @@ exports.createOrder = async (req, res) => {
     console.log('User ID:', req.userId);
     console.log('Headers:', req.headers);
     
+    // חילוץ נתוני ההזמנה מהבקשה
     const { items, total, shippingAddress } = req.body;
     
+    // בדיקה שהוזנו פריטים להזמנה
     if (!items || !Array.isArray(items) || items.length === 0) {
       console.log('Invalid items array:', items);
       return res.status(400).json({ message: 'רשימת מוצרים ריקה או לא תקינה' });
     }
 
-    // Get user's shipping address from profile if not provided in request
+    // קבלת כתובת למשלוח מהפרופיל אם לא סופקה בבקשה
     let finalShippingAddress = shippingAddress;
     if (!finalShippingAddress) {
       const user = await User.findById(req.userId);
@@ -26,7 +30,7 @@ exports.createOrder = async (req, res) => {
       }
     }
 
-    // Validate shipping address
+    // בדיקת תקינות כתובת למשלוח
     if (!finalShippingAddress.street || !finalShippingAddress.city || !finalShippingAddress.postalCode) {
       return res.status(400).json({ message: 'כתובת המשלוח לא מלאה. נדרשים רחוב, עיר ומיקוד.' });
     }
@@ -39,6 +43,7 @@ exports.createOrder = async (req, res) => {
       shippingAddress: finalShippingAddress
     });
 
+    // יצירת אובייקט הזמנה חדש
     const order = new Order({ 
       user: req.userId, 
       items,
@@ -49,6 +54,7 @@ exports.createOrder = async (req, res) => {
     
     console.log('Order object created:', order);
     
+    // שמירת ההזמנה במסד הנתונים
     const savedOrder = await order.save();
     console.log('Order saved successfully:', savedOrder);
     
@@ -63,6 +69,7 @@ exports.createOrder = async (req, res) => {
   }
 };
 
+// שליפת כל ההזמנות של המשתמש
 exports.getOrders = async (req, res) => {
   try {
     const orders = await Order.find({ user: req.userId }).sort({ createdAt: -1 });
@@ -73,6 +80,7 @@ exports.getOrders = async (req, res) => {
   }
 };
 
+// עדכון הזמנה קיימת
 exports.updateOrder = async (req, res) => {
   try {
     const order = await Order.findOneAndUpdate(
@@ -88,6 +96,7 @@ exports.updateOrder = async (req, res) => {
   }
 };
 
+// מחיקת הזמנה
 exports.deleteOrder = async (req, res) => {
   try {
     const order = await Order.findOneAndDelete({ _id: req.params.id, user: req.userId });
